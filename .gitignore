@@ -1,0 +1,58 @@
+# created by virtualenv automatically
+# Byte-compiled / optimized files
+__pycache__/
+*.py[cod]
+*$py.class
+
+Lib/
+
+Scripts/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+*.egg
+
+# Virtual environments
+venv/
+env/
+env_bak/
+
+*.cfg
+
+# IDE-specific files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Compiled Python files
+*.pyc
+*.pyo
+*.pyd
+
+# Logs and databases
+*.log
+*.sqlite3
+*.db
+
+# Generated files
+*.csv
+*.xlsx
+*.xls
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Miscellaneous
+*.bak
+*.swp
+*~
+
+# Ignore specific files or directories
+# filename.ext
+# directory/
+
+config.py
