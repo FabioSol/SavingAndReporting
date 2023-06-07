@@ -35,7 +35,7 @@ env_bak/
 # Logs and databases
 *.log
 
-
+share/
 # Generated files
 
 *.xlsx
