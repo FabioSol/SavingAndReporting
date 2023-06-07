@@ -34,11 +34,10 @@ env_bak/
 
 # Logs and databases
 *.log
-*.sqlite3
-*.db
+
 
 # Generated files
-*.csv
+
 *.xlsx
 *.xls
 
