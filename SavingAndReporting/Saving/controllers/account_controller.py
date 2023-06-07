@@ -1,6 +1,7 @@
 from SavingAndReporting.Saving.schemas.account import Account
 from SavingAndReporting.Saving.controllers.historic_controller import HistoricController
 
+
 class AccountController:
     @staticmethod
     def create_account(account_id: str,
@@ -11,6 +12,9 @@ class AccountController:
         HistoricController.create_historic_table(account)
         return account
 
-
-
-
+    @staticmethod
+    def get_account(account_id: str) -> Account:
+        try:
+            return Account.get(Account.account_id == account_id)
+        except Account.DoesNotExist:
+            return None

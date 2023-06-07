@@ -1,6 +1,7 @@
 from peewee import *
+from SavingAndReporting import database_path
 
-db = SqliteDatabase("./db/accounts.db", timeout=10)
+db = SqliteDatabase(database_path, timeout=10)
 
 
 class Account(Model):

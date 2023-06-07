@@ -3,6 +3,7 @@ from SavingAndReporting.Saving.schemas.account import Account
 from SavingAndReporting.Saving.controllers.account_controller import AccountController
 from SavingAndReporting.Saving.controllers.historic_controller import HistoricController
 from datetime import datetime
+from SavingAndReporting import database_path
 import os
 import csv
 import time
@@ -81,7 +82,7 @@ def migrate():
                     past_balance_low = balance_low
                     past_balance_close = balance_close
 
-    if create_db("./db/accounts.db"):
+    if create_db(database_path):
 
         account_ids = ["15843602", "15843603", "15843604", "15843606", "15843607", "192025769"]
         initial_amounts = [10_000, 10_000, 10_000, 10_000, 10_000, 2_112]

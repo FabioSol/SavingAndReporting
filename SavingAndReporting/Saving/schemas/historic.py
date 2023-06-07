@@ -1,8 +1,7 @@
 from peewee import *
-from SavingAndReporting.Saving.schemas.account import Account
+from SavingAndReporting import database_path
 
-
-db = SqliteDatabase("./db/accounts.db", timeout=10)
+db = SqliteDatabase(database_path, timeout=10)
 
 
 class Historic(Model):

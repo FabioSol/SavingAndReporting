@@ -1,3 +1,3 @@
-from db.migrations import migrate
+from SavingAndReporting.Saving.db.migrations import migrate
 
 migrate()

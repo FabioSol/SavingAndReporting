@@ -1,9 +1,10 @@
 from SavingAndReporting.Saving.schemas.account import Account
 from SavingAndReporting.Saving.schemas.historic import Historic
+from SavingAndReporting import database_path
 from peewee import *
-import datetime
+from datetime import datetime, timedelta
 
-db = SqliteDatabase("./db/accounts.db", timeout=10)
+db = SqliteDatabase(database_path, timeout=10)
 
 
 class HistoricController:
@@ -51,7 +52,10 @@ class HistoricController:
 
         # Retrieve all rows from the historic table
         rows = HistoricTable.select().execute()
-        return list(rows)
+        # Convert each row object to its dictionary representation
+        rows_data = [row.__dict__['__data__'] for row in rows]
+
+        return rows_data
 
     @staticmethod
     def get_historic_rows_since(account_id: str, since_date: datetime):
@@ -66,7 +70,9 @@ class HistoricController:
 
         # Retrieve rows from the historic table since the specified date
         rows = HistoricTable.select().where(HistoricTable.datetime >= since_date).execute()
-        return list(rows)
+        rows_data = [row.__dict__['__data__'] for row in rows]
+
+        return rows_data
 
     @staticmethod
     def get_last_historic_row(account_id: str):
@@ -79,5 +85,17 @@ class HistoricController:
                 table_name = table_name
 
         # Retrieve the last row from the historic table
-        last_row = HistoricTable.select().order_by(HistoricTable.datetime.desc()).limit(1).execute()
-        return last_row.first() if last_row else None
+        last_row = HistoricTable.select().order_by(HistoricTable.id.desc()).get()
+        return last_row.__dict__['__data__']
+
+    @staticmethod
+    def get_last_24hrs_historic_rows(account_id: str):
+        now = datetime.now()
+        since_date = now - timedelta(hours=24)
+        return HistoricController.get_historic_rows_since(account_id, since_date)
+
+    @staticmethod
+    def get_last_30days_historic_rows(account_id: str):
+        now = datetime.now()
+        since_date = now - timedelta(days=30)
+        return HistoricController.get_historic_rows_since(account_id, since_date)
