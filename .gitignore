@@ -6,6 +6,8 @@ __pycache__/
 
 Lib/
 
+share/
+
 Scripts/
 
 # Distribution / packaging
@@ -35,7 +37,6 @@ env_bak/
 # Logs and databases
 *.log
 
-share/
 # Generated files
 
 *.xlsx
@@ -55,3 +56,4 @@ Thumbs.db
 # directory/
 
 config.py
+/share/
