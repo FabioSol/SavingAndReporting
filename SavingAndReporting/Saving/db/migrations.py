@@ -6,16 +6,13 @@ from datetime import datetime
 from SavingAndReporting import database_path
 import os
 import csv
-import time
 
 
 def migrate():
     def create_db(path: str) -> bool:
         if not os.path.isfile(path):
             db = SqliteDatabase(path)
-            time.sleep(1)
             db.create_tables([Account])
-
             return True
 
     def process_csv_files(directory, account):

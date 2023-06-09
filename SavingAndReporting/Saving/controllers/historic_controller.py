@@ -99,3 +99,24 @@ class HistoricController:
         now = datetime.now()
         since_date = now - timedelta(days=30)
         return HistoricController.get_historic_rows_since(account_id, since_date)
+
+    @staticmethod
+    def erase_historic_table(account_id: str):
+        # Get the historic table name for the specified account
+        global table_name
+        table_name = f'historic_{account_id}'
+
+        # Create a temporary model class for the table
+        class HistoricTable(Historic):
+            class Meta:
+                table_name = table_name
+                database = db
+
+        # Drop the table if it exists
+        if HistoricTable.table_exists():
+            HistoricTable.drop_table()
+
+        # Optionally, you can recreate the table if needed
+        # HistoricTable.create_table()
+
+        return {"message": f"Historic table {table_name} erased successfully."}

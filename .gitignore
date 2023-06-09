@@ -6,9 +6,7 @@ __pycache__/
 
 Lib/
 
-share/
 
-etc/
 
 
 Scripts/
@@ -59,4 +57,5 @@ Thumbs.db
 # directory/
 
 config.py
-/share/
+share/
+etc/

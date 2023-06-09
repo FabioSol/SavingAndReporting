@@ -1,3 +1,4 @@
+
 from fastapi import FastAPI
 from datetime import datetime
 from SavingAndReporting.Saving.controllers import account_controller, historic_controller
@@ -7,7 +8,8 @@ app = FastAPI()
 
 @app.get("/")
 async def root():
-    return {"message": "SavingAndReporting"}
+    return {"message": "SavingAndReporting!"}
+
 @app.get("/status")
 async def check_status():
     return {"message": "Server is running"}
@@ -60,5 +62,19 @@ async def new_account(data: dict):
             return {"message": "Error occurred", "error": str(e)}
     else:
         return {"message": "Account already exist"}
+
+@app.delete("/account/{account_id}")
+async def delete_account(account_id: str):
+    account = account_controller.AccountController.get_account(account_id=account_id)
+    if account:
+        try:
+            # Delete the account and its associated historic table
+            account_controller.AccountController.erase_account(account_id=account_id)
+
+            return {"message": "Account deleted successfully"}
+        except Exception as e:
+            return {"message": "Error occurred", "error": str(e)}
+    else:
+        return {"message": "Account not found"}
 
 

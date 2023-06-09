@@ -5,7 +5,7 @@ db = SqliteDatabase(database_path, timeout=10)
 
 
 class Account(Model):
-    account_id = CharField(primary_key=True)
+    account_id = CharField(unique=True)
     initial_amount = FloatField()
     type_of_account = CharField()
 
