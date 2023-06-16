@@ -83,7 +83,7 @@ def migrate():
 
         account_ids = ["15843602", "15843603", "15843604", "15843606", "15843607", "192025769"]
         initial_amounts = [10_000, 10_000, 10_000, 10_000, 10_000, 2_112]
-        account_types = ["CentDemo", "CentDemo", "CentDemo", "CentDemo", "CentDemo", "CentReal(USC)"]
+        account_types = ["CentDemo(USC)", "CentDemo(USC)", "CentDemo(USC)", "CentDemo(USC)", "CentDemo(USC)", "CentReal(USC)"]
 
         test_data_path = "test_data/"
 
@@ -96,5 +96,3 @@ def migrate():
         print("previously made")
 
 
-if __name__ == '__main__':
-    migrate()

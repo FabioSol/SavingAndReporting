@@ -1,7 +1,10 @@
-
 from fastapi import FastAPI
 from datetime import datetime
 from SavingAndReporting.Saving.controllers import account_controller, historic_controller
+from SavingAndReporting.Reporting.sending import send_async_message
+import subprocess
+
+
 
 app = FastAPI()
 
@@ -10,11 +13,32 @@ app = FastAPI()
 async def root():
     return {"message": "SavingAndReporting!"}
 
-@app.get("/status")
-async def check_status():
-    return {"message": "Server is running"}
 
-@app.post("/bar")
+@app.get("/ping")
+async def check_status():
+    return {"pong"}
+
+
+@app.post("/account")
+async def new_account(data: dict):
+    account_id = data.get("account_id")
+    initial_amount = data.get("initial_amount")
+    type_of_account = data.get("type_of_account")
+    account = account_controller.AccountController.get_account(account_id=account_id)
+    if account is None:
+        try:
+            account_controller.AccountController.create_account(account_id=account_id,
+                                                                initial_amount=initial_amount,
+                                                                type_of_account=type_of_account)
+            return {"message": "Account created successfully"}
+
+        except Exception as e:
+            return {"message": "Error occurred", "error": str(e)}
+    else:
+        return {"message": "Account already exist"}
+
+
+@app.post("/account/addbar")
 async def add_bar(data: dict):
     account_id = data.get("account_id")
     date_time = datetime.strptime(data.get("date_time"), "%Y.%m.%d %H:%M:%S")
@@ -45,24 +69,6 @@ async def add_bar(data: dict):
         return {"message": "Error occurred", "error": str(e)}
 
 
-@app.post("/account")
-async def new_account(data: dict):
-    account_id = data.get("account_id")
-    initial_amount = data.get("initial_amount")
-    type_of_account = data.get("type_of_account")
-    account = account_controller.AccountController.get_account(account_id=account_id)
-    if account is None:
-        try:
-            account_controller.AccountController.create_account(account_id=account_id,
-                                                                initial_amount=initial_amount,
-                                                                type_of_account=type_of_account)
-            return {"message": "Account created successfully"}
-
-        except Exception as e:
-            return {"message": "Error occurred", "error": str(e)}
-    else:
-        return {"message": "Account already exist"}
-
 @app.delete("/account/{account_id}")
 async def delete_account(account_id: str):
     account = account_controller.AccountController.get_account(account_id=account_id)
@@ -77,4 +83,24 @@ async def delete_account(account_id: str):
     else:
         return {"message": "Account not found"}
 
+@app.post("/account/report")
+async def report(data: dict):
+    account_id = data.get("account_id")
+    chat_id = data.get("chat_id")
+    message=send_async_message(account_id,chat_id)
+    return {"message": message}
 
+@app.post("/account/test")
+async def test(data: dict):
+    print(data)
+    return {"message": "done"}
+
+
+
+def run_uvicorn():
+    command = 'python -m uvicorn main:app --port 80 --reload'
+    subprocess.run(command, shell=True)
+
+
+if __name__ == '__main__':
+    run_uvicorn()
