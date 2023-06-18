@@ -2,6 +2,7 @@ from SavingAndReporting.Saving.controllers.historic_controller import HistoricCo
 import pandas as pd
 import matplotlib.pyplot as plt
 from SavingAndReporting import imgs_path
+from config import portfolio_nicknames
 
 def make_image(id: str):
     historic = HistoricController.get_all_historic_rows(id)
@@ -15,8 +16,7 @@ def make_image(id: str):
     plt.plot(x, y2, label="Equity",color='tab:orange')
     plt.plot(x, y1, label="Balance",color='tab:blue')
     plt.xticks(rotation=20, ha='right')
-    plt.title('Account: '+id, fontname='Arial',color=(111/255,111/255,111/255),fontsize=20)
+    plt.title(portfolio_nicknames.get(id), fontname='Arial',color=(111/255,111/255,111/255),fontsize=20)
     plt.legend(loc="upper left")
     plt.savefig(imgs_path+id+".png")
-
 

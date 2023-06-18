@@ -1,10 +1,11 @@
 from config import telegram_token
 from SavingAndReporting.Reporting.images import make_image
 from SavingAndReporting.Saving.controllers.historic_controller import HistoricController
+from SavingAndReporting.Saving.controllers.account_controller import AccountController
 from telegram import Bot
 import asyncio
 from SavingAndReporting import imgs_path
-
+import re
 
 async def send_message(account_id: str, chat_id: str):
     make_image(account_id)
@@ -13,10 +14,11 @@ async def send_message(account_id: str, chat_id: str):
     equity_close = last_bar.get("equity_close")
     balance_open = last_bar.get("balance_open")
     balance_close = last_bar.get("balance_close")
-
-    caption = f'<b>Account:</b>         {account_id} \n' + \
-              f'<b>Balance:</b>          {str(equity_close)} ({round(equity_close / equity_open - 1, 2)}%)\n' + \
-              f'<b>Equity:</b>             {str(balance_close)} ({round(balance_close / balance_open - 1, 2)}%)'
+    account=AccountController.get_account(account_id)
+    currency=re.findall(r"\((.*?)\)",account.type_of_account)[0]
+    caption = f'<b>Account:</b>     {account_id} \n' + \
+              f'<b>Balance:</b>      ${"{:,.2f}".format(equity_close)} {currency} ({round(equity_close / equity_open - 1, 2)}%)\n' + \
+              f'<b>Equity:</b>         ${"{:,.2f}".format(balance_close)} {currency} ({round(balance_close / balance_open - 1, 2)}%)'
 
     bot = Bot(token=telegram_token)
     with open(imgs_path + account_id + ".png", "rb") as image_file:
