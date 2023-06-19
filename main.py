@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from datetime import datetime
 from SavingAndReporting.Saving.controllers import account_controller, historic_controller
-from SavingAndReporting.Reporting.sending import send_async_message
+from SavingAndReporting.Reporting.sending import send_message
 import subprocess
 
 
@@ -87,12 +87,11 @@ async def delete_account(account_id: str):
 async def report(data: dict):
     account_id = data.get("account_id")
     chat_id = data.get("chat_id")
-    message=send_async_message(account_id,chat_id)
+    message = send_message(account_id,chat_id)
     return {"message": message}
 
 @app.post("/account/test")
 async def test(data: dict):
-    print(data)
     return {"message": "done"}
 
 
