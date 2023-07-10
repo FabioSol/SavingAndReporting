@@ -4,8 +4,6 @@ from SavingAndReporting.Saving.controllers import account_controller, historic_c
 from SavingAndReporting.Reporting.sending import send_message
 import subprocess
 
-
-
 app = FastAPI()
 
 
@@ -83,17 +81,20 @@ async def delete_account(account_id: str):
     else:
         return {"message": "Account not found"}
 
+
 @app.post("/account/report")
 async def report(data: dict):
     account_id = data.get("account_id")
     chat_id = data.get("chat_id")
-    message = send_message(account_id,chat_id)
+    message = False
+    while message == False:
+        message = send_message(account_id, chat_id)
     return {"message": message}
+
 
 @app.post("/account/test")
 async def test(data: dict):
     return {"message": "done"}
-
 
 
 def run_uvicorn():
