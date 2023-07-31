@@ -86,11 +86,9 @@ async def delete_account(account_id: str):
 @app.post("/account/report")
 async def report(data: dict):
     account_id = data.get("account_id")
-    message = False
     sent=[]
-    while message == False:
-        for i in telegram_ids:
-            sent += [send_message(account_id,i)]
+    for i in telegram_ids:
+        sent += [send_message(account_id,i)]
     return {"message": sent}
 
 
