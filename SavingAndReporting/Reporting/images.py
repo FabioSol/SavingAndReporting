@@ -19,4 +19,5 @@ def make_image(id: str):
     plt.title(portfolio_nicknames.get(id), fontname='Arial',color=(111/255,111/255,111/255),fontsize=20)
     plt.legend(loc="upper left")
     plt.savefig(imgs_path+id+".png")
+    plt.close()
 

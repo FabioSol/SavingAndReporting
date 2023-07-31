@@ -3,6 +3,7 @@ from datetime import datetime
 from SavingAndReporting.Saving.controllers import account_controller, historic_controller
 from SavingAndReporting.Reporting.sending import send_message
 import subprocess
+from config import telegram_ids
 
 app = FastAPI()
 
@@ -85,11 +86,12 @@ async def delete_account(account_id: str):
 @app.post("/account/report")
 async def report(data: dict):
     account_id = data.get("account_id")
-    chat_id = data.get("chat_id")
     message = False
+    sent=[]
     while message == False:
-        message = send_message(account_id, chat_id)
-    return {"message": message}
+        for i in telegram_ids:
+            sent += [send_message(account_id,i)]
+    return {"message": sent}
 
 
 @app.post("/account/test")
